@@ -1,2 +1,0 @@
-'use strict';
-//Application Dependencies
