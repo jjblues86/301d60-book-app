@@ -19,34 +19,42 @@ app.get('/', (request, response) => {
 app.get('/hello', (request, response) => {
   response.render('index');
 });
-app.get('*', (req, res) => res.status(404).render('/views/pages/error/error404'));
-app.post('./views/searches', searchBook);
+app.get('*', (req, res) => res.status(404).render('error'));
+// app.post('./views/searches', searchBook);
 
-
+app.post('/searches', search);
 
 
 function Book(book) {
-    this.title = book.title || 'No title available';
-    this.author = book.authors || 'No author available';
-    this.description = book.description || 'No description available';
-    this.url = book.imageLinks ? 'https' + book.imageLinks.thumbnail.slice(4) : '../img/book-icon.png';
-    this.isbn = book.industryIdentifiers ? `${book.industryIdentifiers[0].type} ${book.industryIdentifiers[0].identifier}` : 'No isbn available';
-  }
-  
-function searchBook(request, response) {
-    superagent.get(`https://www.googleapis.com/books/v1/volumes?q=author=ramsey`).then(result => {
-        if(result.body.totalItems > 0) {
-            result = result.body.items.map( book => new Book(book.volumeInfo));
-            console.log(result);
-          }
-    });
+  this.title = book.title || 'No title available';
+  this.author = book.authors || 'No author available';
+  this.description = book.description || 'No description available';
+  this.url = book.imageLinks ? 'https' + book.imageLinks.thumbnail.slice(4) : '../img/book-icon.png';
+  this.isbn = book.industryIdentifiers ? `${book.industryIdentifiers[0].type} ${book.industryIdentifiers[0].identifier}` : 'No isbn available';
 }
 
-searchBook();
-  
 
+//Searching for books by title or author
+function search(req, res){
+  console.log('this', req,res)
+  let searchStr = req.body.search[0];
+  let searchType = req.body.search[1];
+  let booksUrl = 'https://www.googleapis.com/books/v1/volumes?q=books';
 
+  //Search Type Conditionals
+  if(searchType === 'title'){
+    booksUrl += `+intitle:${searchStr}`
+  } else if (searchType === 'author') {
+    booksUrl += `+inauthor:${searchStr}`
 
+  }
+  return superagent.get(booksUrl)
+    .then(result => {
+      let books = result.body.items.map(book => new Book(book.volumeInfo))
+      console.log('this', books)
+      res.render('searches/show', {books: books})
+    })
+}
 
 
 
