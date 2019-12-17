@@ -26,9 +26,9 @@ Express
 
 09:10am - Created the server and wired the required routes
 
-10:15 - Completed the function for Google books Api to render the book objects needed to show on the page
+10:15am - Completed the function for Google books Api to render the book objects needed to show on the page
 
-12:20 - Created a heroku app and comopleted all required task for this lab
+12:20pm - Created a heroku app and comopleted all required task for this lab
 
 <!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an examples:
 
