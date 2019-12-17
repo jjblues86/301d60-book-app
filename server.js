@@ -1,7 +1,7 @@
 'use strict';
 const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3737;
 const superagent = require('superagent');
 
 require('dotenv').config();
@@ -36,9 +36,11 @@ function Book(book) {
 
 //Searching for books by title or author
 function search(req, res){
-  console.log('this', req,res)
-  let searchStr = req.body.search[0];
-  let searchType = req.body.search[1];
+  //console.log('this', req,res)
+  let searchStr = req.body.search;
+ console.log(`Search String: ${searchStr}`); 
+  let searchType = req.body.type;
+  console.log(req.body);
   let booksUrl = 'https://www.googleapis.com/books/v1/volumes?q=books';
 
   //Search Type Conditionals
@@ -51,9 +53,9 @@ function search(req, res){
   return superagent.get(booksUrl)
     .then(result => {
       let books = result.body.items.map(book => new Book(book.volumeInfo))
-      console.log('this', books)
+      //console.log('this', books)
       res.render('searches/show', {books: books})
-    })
+    });
 }
 
 
