@@ -1,6 +1,7 @@
 # 301d60-book-app
 
 **Author**: Jerome and Mattaus
+
 **Version**: 1.0.0 (increment the patch/fix version number if you make more commits past your first submission)
 
 ## Overview
@@ -35,4 +36,3 @@ Express
 
 ## Credits and Collaborations
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->
--->
