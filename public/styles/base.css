@@ -7,3 +7,11 @@ body {
   width: 100%;
   align-content: center;
 }
+
+main{
+  margin: auto 0;
+}
+
+h2{
+  text-align: center;
+}
