@@ -5,6 +5,11 @@
 </head>
 <body>
 <%- include('../layout/head.ejs'); %>
+
+ <header>
+    <h2><span><%= books.length %></span>Saved Books</h2>
+  </header>
+
     <section class="books">
       <% if(books) { %>
         <% books.forEach( book => { %>
@@ -16,26 +21,6 @@
         </div>
       <% }; %>
     </section>
-
-
- <section>
-    <h2><span><%= books.length %></span>Saved Books</h2>
-  </section>
-
-  <main>
-
-      <ul>
-        <% books.forEach(book => { %>
-          <li data-id="<%= book.id %>">
-            <img src=<%= book.image_url %>>
-            <h3><%= book.author %></h3>
-            <p><%= book.title %></p>
-            <p><%= book.description %></p>
-            <p><%= book.bookshelf %></p>
-            <p> ISBN: <%= book.isbn %></p>  
-          </li>
-      <%  }) %>
-      </ul>
   </main>
   <footer>
 

@@ -2,7 +2,7 @@
 const express = require('express');
 const app = express();
 const pg = require('pg');
-const PORT = process.env.PORT || 3070;
+const PORT = process.env.PORT || 3000;
 const superagent = require('superagent');
 
 require('dotenv').config();
