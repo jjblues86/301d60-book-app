@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Book App</title>
-  <link rel="stylesheet" href="/public/styles/base.css">
-
-
+  <title>Books</title>
 </head>
-<header>
-  <nav>
-    Best Books!
-  </nav>
-</header>
-
 <body>
 <%- include('../layout/head.ejs'); %>
+    <section class="books">
+      <% if(books) { %>
+        <% books.forEach( book => { %>
+          <%- include('./books/detail', {show:false, book:book} ) %>
+        <% }); %>
+      <% } else { %>
+        <div class="flex-column">
+          <h3> No books with <%= searchType %> <%= searchCriteria %> found. Please refine search criteria and <a href="./">try again</a><h3>
+        </div>
+      <% }; %>
+    </section>
+
 
  <section>
     <h2><span><%= books.length %></span>Saved Books</h2>
@@ -33,20 +32,13 @@
             <p><%= book.title %></p>
             <p><%= book.description %></p>
             <p><%= book.bookshelf %></p>
-            <p> ISBN: <%= book.isbn %></p> 
-            <a href="books/<%= book.id %>">
-              <button>View Details</button>
-            </a>  
+            <p> ISBN: <%= book.isbn %></p>  
           </li>
       <%  }) %>
       </ul>
-
   </main>
+  <footer>
 
-  <script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
-    </body>
-  </html>
-  
+  </footer>
+</body>
+</html>
