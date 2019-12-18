@@ -21,7 +21,7 @@ client.on('error', err => console.error(err));
 //Search Route
 app.get('/', home);
 app.get('/new', newSearch);
-// app.get('/books/:id', renderBook);
+app.get('/books/:id', renderBook);
 // app.get('/', (request, response) => {
 //   response.render('index');
 // });
@@ -56,29 +56,29 @@ function newSearch(req, res){
 }
 
 // Render Book
-// function renderBook(req,res){
-//   let SQL = `SELECT * FROM books WHERE id=$1`;
-//   let values = [req.params.id];
+function renderBook(req,res){
+  let SQL = `SELECT * FROM books WHERE id=$1`;
+  let values = [req.params.id];
 
-//   return client.query(SQL, values)
-//     .then(booksResult => {
-//       console.log('this', booksResult);
+  return client.query(SQL, values)
+    .then(booksResult => {
+      console.log('this', booksResult);
 
-//       const book = booksResult.rows[0];
+      const book = booksResult.rows[0];
 
-//       return client.query('SELECT DISTINCT bookshelf FROM books')
-//         .then(bookShelfData => {
-//           const bookShelf = bookShelfData.rows;
-//           console.log(bookShelf);
-//           return res.render('index', {
-//             book: book,
-//             bookShelf: bookShelf,
-//           });
-//         })
-//         .catch(err => errorHandler(err, res))
-//     })
-//     .catch(err => errorHandler(err, res));
-// }
+      return client.query('SELECT DISTINCT bookshelf FROM books')
+        .then(bookShelfData => {
+          const bookShelf = bookShelfData.rows;
+          console.log(bookShelf);
+          return res.render('index', {
+            book: book,
+            bookShelf: bookShelf,
+          });
+        })
+        .catch(err => errorHandler(err, res))
+    })
+    .catch(err => errorHandler(err, res));
+}
 
 
 function Book(book) {

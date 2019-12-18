@@ -19,12 +19,12 @@
 <body>
 <%- include('../layout/head.ejs'); %>
 
+ <section>
+    <h2><span><%= books.length %></span>Saved Books</h2>
+  </section>
+
   <main>
 
-    <section>
-      <h2><span><%= books.length %></span>Saved Books</h2>
-    </section>
-    <div>
       <ul>
         <% books.forEach(book => { %>
           <li data-id="<%= book.id %>">
@@ -33,13 +33,14 @@
             <p><%= book.title %></p>
             <p><%= book.description %></p>
             <p><%= book.bookshelf %></p>
-            <p> ISBN: <% book.isbn %></p> 
-  
+            <p> ISBN: <%= book.isbn %></p> 
+            <a href="books/<%= book.id %>">
+              <button>View Details</button>
+            </a>  
           </li>
       <%  }) %>
       </ul>
-    </div>
-  
+
   </main>
 
   <script
