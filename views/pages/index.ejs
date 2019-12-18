@@ -20,22 +20,28 @@
 <%- include('../layout/head.ejs'); %>
 
   <main>
-    <h2>Search By Author or Title</h2>
-    <form action="/searches" method="POST">
-      <input type="text" name="search" placeholder="Enter a title or author">
-      <fieldset class="radio">
-        <label for="title">Title</label>
 
-        <input type="radio" name="search" value="title">
-      </fieldset>
-      <fieldset class="radio">
-        <label for="author">Author</label>
-        <input type="radio" name="search" value="author">
-
-        </fieldset>
-        <button type="submit">Search the Google Books Api</button>
-    </form>
+    <section>
+      <h2><span><%= books.length %></span>Saved Books</h2>
+    </section>
+    <div>
+      <ul>
+        <% books.forEach(book => { %>
+          <li data-id="<%= book.id %>">
+            <img src=<%= book.image_url %>>
+            <h3><%= book.author %></h3>
+            <p><%= book.title %></p>
+            <p><%= book.description %></p>
+            <p><%= book.bookshelf %></p>
+            <p> ISBN: <% book.isbn %></p> 
+  
+          </li>
+      <%  }) %>
+      </ul>
+    </div>
+  
   </main>
+
   <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="

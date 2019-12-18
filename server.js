@@ -19,9 +19,12 @@ client.connect()
 client.on('error', err => console.error(err));
 
 //Search Route
-app.get('/', (request, response) => {
-  response.render('index');
-});
+app.get('/', home);
+app.get('/new', newSearch);
+// app.get('/books/:id', renderBook);
+// app.get('/', (request, response) => {
+//   response.render('index');
+// });
 app.get('/hello', (request, response) => {
   response.render('index');
 });
@@ -31,10 +34,50 @@ app.get('*', (req, res) => res.status(404).render('error'));
 app.post('/searches', search);
 
 //Home Route
-// function home(req, res){
-//   let SQL = 'SELECT * FROM books';
+function home(req, res){
+  let SQL = 'SELECT * FROM books';
+  // console.log('this', SQL);
 
-//   return client.query()
+  return client.query(SQL)
+    .then(responseData => {
+      console.log('this', responseData);
+
+
+      res.render('index', {books: responseData.rows})
+    })
+    .catch(err => {
+      res.render('pages/error', {err});
+    });
+}
+
+
+function newSearch(req, res){
+  res.render('searches/new');
+}
+
+// Render Book
+// function renderBook(req,res){
+//   let SQL = `SELECT * FROM books WHERE id=$1`;
+//   let values = [req.params.id];
+
+//   return client.query(SQL, values)
+//     .then(booksResult => {
+//       console.log('this', booksResult);
+
+//       const book = booksResult.rows[0];
+
+//       return client.query('SELECT DISTINCT bookshelf FROM books')
+//         .then(bookShelfData => {
+//           const bookShelf = bookShelfData.rows;
+//           console.log(bookShelf);
+//           return res.render('index', {
+//             book: book,
+//             bookShelf: bookShelf,
+//           });
+//         })
+//         .catch(err => errorHandler(err, res))
+//     })
+//     .catch(err => errorHandler(err, res));
 // }
 
 
@@ -74,6 +117,11 @@ function search(req, res){
       //console.log('this', books)
       res.render('searches/show', {books})
     });
+}
+
+//Error Handler
+function errorHandler(err, res){
+  if(res) res.status(500).render('pages/error');
 }
 
 
