@@ -1,17 +1,250 @@
+
 * {
   box-sizing: border-box;
 }
 
 body {
-  background-color: #808080;
+  /* background-color: #808080; */
   width: 100%;
   align-content: center;
 }
 
-main{
-  margin: auto 0;
+@media screen and (max-width: 480px) {
+  body {
+    background-color: lightblue;
+  }
 }
 
-h2{
+h1 {
+  font-family: 'Thasadith', sans-serif;
+  font-family: 'Staatliches', cursive;
+  text-align: center;
+  font-size: 40px;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+h2 {
+  color: #000000;
+  font-family: 'Thasadith', sans-serif;
+  font-family: 'Staatliches', cursive;
   text-align: center;
 }
+
+h3{
+  color: #ffffff;
+
+}
+
+h4 {
+  color: #000000;
+  font-family: 'Thasadith', sans-serif;
+  font-family: 'Staatliches', cursive;
+}
+
+p{
+  text-align: justify;
+  color: #4d4b4b;
+
+}
+
+h5 {
+  font-size: 25px;
+  text-align: center;
+  color: #ffffff;
+  background-color: #525252;
+}
+
+h6 {
+  font-size: 25px;
+  text-align: center;
+  color: #ffffff;
+  background-color: #525252;
+}
+
+ 
+#enter {
+  width: 60%; 
+  display: flex;
+  margin: auto;
+  padding: 8px;
+  align-items: center;
+  flex-direction: column;
+}
+
+#select {
+  display: flex;
+  padding: 3px;
+  margin: 20px;
+  flex-wrap: wrap;
+}
+
+#button {
+  background-color: black;
+  padding: 8px;
+  color: #ffffff;
+  width: 60%; 
+  display: flex;
+  margin: auto;
+  padding: 1px;
+  align-items: center;
+  flex-direction: column;
+  line-height: 2.0em; 
+  font-size: 20px;
+  text-align: center;
+}
+
+  .radio {
+  width: 60%; 
+  display: flex;
+  margin: auto;
+  flex-direction: column;
+  padding: 8px;
+  
+}  
+
+#add-form-submit {
+  background-color: black;
+  padding: 8px;
+  color: #ffffff;
+  /* width: 60%;  */
+  display: flex;
+  margin: auto;
+  padding: 1px;
+  align-items: center;
+  flex-direction: column;
+  line-height: 2.0em; 
+  font-size: 20px;
+  text-align: center;
+}
+
+.detail {
+  border: 1px solid #070707;
+  list-style-position:inside;
+  width: 40%;
+  display: block;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  padding: 3px; 
+  background-color: #c2c2c2;
+  font-family: 'Thasadith', sans-serif;
+  -webkit-transition: background-color 2s ease-out;
+  -moz-transition: background-color 2s ease-out;
+  -o-transition: background-color 2s ease-out;
+  transition: background-color 2s ease-out; 
+}
+
+.detail:hover {
+  background-color:#927d7d;
+  cursor: pointer;
+}
+
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  border: 1px solid #070707;
+  list-style-position:inside;
+  width: 40%;
+  display: block;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #c2c2c2;
+  font-family: 'Thasadith', sans-serif;
+  -webkit-transition: background-color 2s ease-out;
+  -moz-transition: background-color 2s ease-out;
+  -o-transition: background-color 2s ease-out;
+  transition: background-color 2s ease-out; 
+
+}
+
+li:hover {
+  background-color: #807373;
+  cursor: pointer;
+}
+
+.icon-facebook:before {
+  content: "\e900";
+  color: #3b5998;
+}
+
+.icon-twitter:before {
+  content: "\e902";
+  color: #1da1f2;
+}
+
+.icon-linkedin:before {
+  content: "\e901";
+  color: #0077b5;
+}
+
+/* Hamburger menu */
+
+header > .top {
+	position: absolute;
+  right: 20px;
+  margin-top: -80px;
+}
+header > .top a.menu_icon i {
+	color: #000;
+	font-size: 40px;
+	padding-top: 5px;
+  transition: .2s ease;
+ 
+}
+header > .top a.menu_icon:hover i {
+	color: #fff;
+}
+nav.menu {
+  width: 200px;
+	min-height: calc(100vh - 150px);
+	background-color: #c2c2c2;
+	position: absolute;
+	right: -300px;
+	transition: .3s all;
+}
+nav.menu > a {
+    display: block;
+    padding: 5px;
+    margin: 15px 0 0px 10px;
+    color: #494949;
+    text-transform: uppercase;
+}
+
+.menu_show {
+  right: 0!important;
+  
+}
+
+@media screen and (max-width: 425px) {
+	header h1 {
+		font-size: 16px;
+	}
+}
+@media screen and (max-width: 360px) {
+	nav.menu {
+		width: 100%;
+		left: -100%; 
+	}
+}
+
+/*jquery form */
+
+.detail-form {
+  text-align: center;
+}
+
+ input, textarea {
+  display: inline-block;
+  width: 50%;
+  margin: 20px auto;
+} 

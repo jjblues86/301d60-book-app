@@ -22,19 +22,16 @@ client.on('error', err => console.error(err));
 app.get('/', home);
 app.get('/new', newSearch);
 app.get('/books/:id', renderBook);
-// app.get('/', (request, response) => {
-//   response.render('index');
-// });
+app.post('/books/:id', renderBook);
+app.post('/save', saveBook);
+app.post('/searches', search);
+
+
+
 app.get('/hello', (request, response) => {
   response.render('index');
 });
 
-// app.post('./views/searches', searchBook);
-
-app.get('/books/:book_id', showBookDetails);
-//app.put('/books/:book_id', updateBookDetails);
-
-app.post('/searches', search);
 
 //Home Route
 function home(req, res){
@@ -68,12 +65,13 @@ function renderBook(req,res){
       console.log('this', booksResult);
 
       const book = booksResult.rows[0];
+      console.log('this', book)
 
       return client.query('SELECT DISTINCT bookshelf FROM books')
         .then(bookShelfData => {
           const bookShelf = bookShelfData.rows;
           console.log(bookShelf);
-          return res.render('index', {
+          return res.render('books/show', {
             book: book,
             bookShelf: bookShelf,
           });
@@ -83,12 +81,34 @@ function renderBook(req,res){
     .catch(err => errorHandler(err, res));
 }
 
+//Save Books
+function saveBook(req, res){
+  let SQL = `INSERT INTO books
+  (author, title, isbn, image_url, description, bookshelf)
+  VALUES($1,$2,$3,$4,$5,$6)`;
+  let values = (SQL, [req.body.author, req.body.title, req.body.isbn, req.body.image_url, req.body.description, req.body.bookShelf]);
+
+  return client.query(SQL, values)
+    .then(savedResults => {
+      let SQL = `SELECT id FROM books WHERE isbn=$1`;
+      let values = [req.body.isbn];
+
+      return client.query(SQL, values)
+        .then(savedResults => {
+          res.redirect(`/books/${savedResults.rows[0].id}`);
+        })
+        .catch(err => errorHandler(err, res));
+    })
+    .catch(err => errorHandler(err, res));
+}
+
+
 
 function Book(book) {
   this.title = book.title || 'No title available';
   this.author = book.authors || 'No author available';
   this.description = book.description || 'No description available';
-  this.url = book.imageLinks ? 'https' + book.imageLinks.thumbnail.slice(4) : '../img/book-icon.png';
+  this.image_url = book.imageLinks ? 'https' + book.imageLinks.thumbnail.slice(4) : '../img/book-icon.png';
   this.isbn = book.industryIdentifiers ? `${book.industryIdentifiers[0].type} ${book.industryIdentifiers[0].identifier}` : 'No isbn available';
 }
 
@@ -108,15 +128,8 @@ function showBookDetails(request, response) {
 
 //Searching for books by title or author
 function search(req, res){
-  //console.log('this', req,res)
-  // let searchStr = req.body.search;
-  // console.log(`Search String: ${searchStr}`);
-  // let searchType = req.body.type;
-  // console.log(req.body);
   let searchStr = req.body.search[0];
-
   let searchType = req.body.search[1];
-
   let booksUrl = 'https://www.googleapis.com/books/v1/volumes?q=';
 
   //Search Type Conditionals

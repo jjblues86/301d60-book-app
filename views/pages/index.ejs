@@ -1,29 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang = "en">
 <head>
-  <title>Books</title>
+  <%- include('../layout/head.ejs'); %>
+  <link rel="stylesheet" href="/public/styles/base.css">
 </head>
 <body>
-<%- include('../layout/head.ejs'); %>
+    <%- include('../layout/header.ejs'); %>
 
- <header>
-    <h2><span><%= books.length %></span>Saved Books</h2>
-  </header>
-
-    <section class="books">
-      <% if(books) { %>
-        <% books.forEach( book => { %>
-          <%- include('./books/detail', {show:false, book:book} ) %>
-        <% }); %>
-      <% } else { %>
-        <div class="flex-column">
-          <h3> No books with <%= searchType %> <%= searchCriteria %> found. Please refine search criteria and <a href="./">try again</a><h3>
-        </div>
-      <% }; %>
-    </section>
-  </main>
-  <footer>
-
-  </footer>
-</body>
-</html>
+    <section>
+        <h2><span><%= books.length %></span>Saved Books</h2>
+      </section>
+      <main>
+        <ul class="saved">
+          <% books.forEach(book => { %>
+            <li data-id="<%= book.id %>">
+              <img src=<%= book.image_url %>>
+              <h3><%= book.title %></h3>
+              <p><%= book.author %></p>
+              <a href="books/<%= book.id %>">
+                <button>View Details</button>
+              </a>
+              <form action="/books/<%=book.id %>" method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="submit" value="Remove from bookshelf">
+              </form>
+            </li>
+          <% }) %>
+        </ul>
+      </main>
+      <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+  </body>
+  </html>

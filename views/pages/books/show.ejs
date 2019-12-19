@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Books API</title>
+   <%- include('../../layout/head.ejs'); %> 
 </head>
 <body>
-  <header>
-    <h2><%= book.title %> Details</h2>
-  </header>
-  <main>
-    <section class="books">
-      <%- include('./detail', { show: true }) %>
- 
-    </section>
-  </main>
-  <footer>
-  </footer>
 
+    <main>
+      <!-- <h1>Test</h1> -->
+         <%- include('./details', {book: book}); %>  
+    </main>
+
+  <%- include('../../layout/footer') %>
+
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
 </body>
 </html>
