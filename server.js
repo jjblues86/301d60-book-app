@@ -39,12 +39,30 @@ app.post('/books/:id', renderBook);
 app.post('/save', saveBook);
 app.post('/searches', search);
 app.put('/update/:id', updateBooks);
-
-
-
 app.get('/hello', (request, response) => {
   response.render('index');
 });
+
+//Searching for books by title or author
+function search(req, res){
+  let searchStr = req.body.search[0];
+  let searchType = req.body.search[1];
+  let booksUrl = 'https://www.googleapis.com/books/v1/volumes?q=';
+
+  //Search Type Conditionals
+  if(searchType === 'title'){
+    booksUrl += `+intitle:${searchStr}`
+  } else if (searchType === 'author') {
+    booksUrl += `+inauthor:${searchStr}`
+
+  }
+  return superagent.get(booksUrl)
+    .then(result => {
+      let books = result.body.items.map(book => new Book(book.volumeInfo))
+      //console.log('this', books)
+      res.render('searches/show', {books})
+    });
+}
 
 
 //Home Route
@@ -140,39 +158,16 @@ function Book(book) {
 }
 
 
-function showBookDetails(request, response) {
-  let sql = 'SELECT * FROM books WHERE books.id = $1;';
+// function showBookDetails(request, response) {
+//   let sql = 'SELECT * FROM books WHERE books.id = $1;';
 
-    client.query(sql, [request.params.book_id]).then( result =>{
+//     client.query(sql, [request.params.book_id]).then( result =>{
       
-      console.log('HELLOOOO');
-      response.render( './books/show', { book: result.rows[0]} )
-    })
-  }
+//       console.log('HELLOOOO');
+//       response.render( './books/show', { book: result.rows[0]} )
+//     })
+//   }
    
-
-
-
-//Searching for books by title or author
-function search(req, res){
-  let searchStr = req.body.search[0];
-  let searchType = req.body.search[1];
-  let booksUrl = 'https://www.googleapis.com/books/v1/volumes?q=';
-
-  //Search Type Conditionals
-  if(searchType === 'title'){
-    booksUrl += `+intitle:${searchStr}`
-  } else if (searchType === 'author') {
-    booksUrl += `+inauthor:${searchStr}`
-
-  }
-  return superagent.get(booksUrl)
-    .then(result => {
-      let books = result.body.items.map(book => new Book(book.volumeInfo))
-      //console.log('this', books)
-      res.render('searches/show', {books})
-    });
-}
 
 //Error Handler
 function errorHandler(err, res){
