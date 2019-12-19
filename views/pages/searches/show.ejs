@@ -1,27 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <%- include('../../layout/head.ejs'); %> 
+    <%- include('../../layout/head.ejs'); %> 
 
-</head>
 <body>
-  <h2>Search results</h2>
+    <%- include('../../layout/header.ejs'); %> 
+  <section>
+    <h2>Search Results</h2> 
+  </section>
+  <main>
 
-  <ul>
-    <% books.forEach(book => { %>
-   
-    <li>
-      <img src=<%= book.url; %>>
-      <h3><%= book.title; %></h3>
-      <h4><%= book.author; %></h4>
-      <p><%= book.description; %></p>
-   </li> 
-   <% }) %>
-  </ul>
-  
+  <ul id="select">
+      <% let result = 0; %>
+      <% books.forEach(book => { %>
+        
+        <li>
+          <img src=<%=book.image_url %>>
+          <h3><%= book.title %></h3>
+          <h4><%= book.author %></h4>
+          <p><%= book.description %></p>
+          <p> ISBN: <%= book.isbn %></p>
+          
+          <button class="show-form" name="select" value="<%= result %>">Select this Book</button>
+          
+          <!-- <p> Bookshelf: <%= book.bookshelf %></p>
+            <button><a href="/new/<%=book.id%>">Select this Book</a> </button> -->
+            <form class="<%=result%>" action="/save" method="post">
+              <input name="title" class="text-input" type="text" name="search" value="<%= book.title %>" required>
+              <input name="author" class="text-input" type="text" name="search" value="<%= book.author %>" required>
+              <input name="isbn" class="text-input" type="text" name="search" value="<%= book.isbn %>" required>
+              <textarea name="description" class="text-input" type="text" cols="30" rows="10" required><%= book.description %></textarea>
+              <input name="bookshelf" class="text-input" type="text" name="search" placeholder="Enter bookshelf name" required>
+              <!-- <input id="add-form-submit" type="submit">Add to Database</input> -->
+              <button id="add-form-submit" type="submit">Add to Database</button>
+              
+            </form>
+        </li>
+       
+        <% result++ %>
+      <% }) %>
+
+    </ul>
+  </main>
+
+  <%- include('../../layout/footer') %>
 </body>
 </html>

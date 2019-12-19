@@ -1,52 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang = "en">
 <head>
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Book App</title>
+  <%- include('../layout/head.ejs'); %>
   <link rel="stylesheet" href="/public/styles/base.css">
-
-
 </head>
-<header>
-  <nav>
-    Best Books!
-  </nav>
-</header>
-
 <body>
-<%- include('../layout/head.ejs'); %>
+    <%- include('../layout/header.ejs'); %>
 
- <section>
-    <h2><span><%= books.length %></span>Saved Books</h2>
-  </section>
-
-  <main>
-
-      <ul>
-        <% books.forEach(book => { %>
-          <li data-id="<%= book.id %>">
-            <img src=<%= book.image_url %>>
-            <h3><%= book.author %></h3>
-            <p><%= book.title %></p>
-            <p><%= book.description %></p>
-            <p><%= book.bookshelf %></p>
-            <p> ISBN: <%= book.isbn %></p> 
-            <a href="books/<%= book.id %>">
-              <button>View Details</button>
-            </a>  
-          </li>
-      <%  }) %>
-      </ul>
-
-  </main>
-
-  <script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
-    </body>
+    <section>
+        <h2><span><%= books.length %></span>Saved Books</h2>
+      </section>
+      <main>
+        <ul class="saved">
+          <% books.forEach(book => { %>
+            <li data-id="<%= book.id %>">
+              <img src=<%= book.image_url %>>
+              <h3><%= book.title %></h3>
+              <p><%= book.author %></p>
+              <a href="books/<%= book.id %>">
+                <button>View Details</button>
+              </a>
+              <form action="/books/<%=book.id %>" method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="submit" value="Remove from bookshelf">
+              </form>
+            </li>
+          <% }) %>
+        </ul>
+      </main>
+      <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
+  </body>
   </html>
-  
