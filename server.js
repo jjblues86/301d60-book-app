@@ -2,14 +2,27 @@
 const express = require('express');
 const app = express();
 const pg = require('pg');
-const PORT = process.env.PORT || 3000;
 const superagent = require('superagent');
+const methodOverride = require('method-override');
+
+const PORT = process.env.PORT || 3000;
+
 
 require('dotenv').config();
 
+//Middlewares
 app.use(express.urlencoded({extended: true}));
 app.use(express.static( './public'));
+app.use(methodOverride((req, res) => {
+  if(req.body && typeof req.body === 'object' && '_method' in req.body) {
+    console.log(req.body['_method']);
+    let method = req.body['_method'];
+    delete req.body['_method'];
+    return method; //returns PUT, PATCH, POST, GET, or DELETE.
+  }
+}))
 
+//Templating engines
 app.set('view engine', 'ejs');
 app.set('views', './views/pages');
 
@@ -25,14 +38,13 @@ app.get('/books/:id', renderBook);
 app.post('/books/:id', renderBook);
 app.post('/save', saveBook);
 app.post('/searches', search);
+app.put('/update/:id', updateBooks);
 
 
 
 app.get('/hello', (request, response) => {
   response.render('index');
 });
-app.get('*', (req, res) => res.status(404).render('error'));
-// app.post('./views/searches', searchBook);
 
 
 //Home Route
@@ -52,7 +64,7 @@ function home(req, res){
     });
 }
 
-
+//New Search route
 function newSearch(req, res){
   res.render('searches/new');
 }
@@ -100,6 +112,19 @@ function saveBook(req, res){
           res.redirect(`/books/${savedResults.rows[0].id}`);
         })
         .catch(err => errorHandler(err, res));
+    })
+    .catch(err => errorHandler(err, res));
+}
+
+//Update Books
+function updateBooks(req,res){
+  let SQL = `UPDATE books SET author=$1, title=$2, isbn=$3, image_url=$4, description=$5, bookshelf=$6 WHERE id=$7`;
+
+  let values = [req.body.author, req.body.title, req.body.isbn, req.body.image_url, req.body.description, req.body.bookShelf, req.params.id];
+
+  return client.query(SQL, values)
+    .then(updatedBook => {
+      res.redirect(`/books/${req.params.id}`);
     })
     .catch(err => errorHandler(err, res));
 }
