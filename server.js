@@ -31,8 +31,6 @@ app.post('/searches', search);
 app.get('/hello', (request, response) => {
   response.render('index');
 });
-app.get('*', (req, res) => res.status(404).render('error'));
-// app.post('./views/searches', searchBook);
 
 
 //Home Route
@@ -42,7 +40,7 @@ function home(req, res){
 
   return client.query(SQL)
     .then(responseData => {
-      console.log('this', responseData);
+      //console.log('this', responseData);
 
 
       res.render('index', {books: responseData.rows})
@@ -115,18 +113,23 @@ function Book(book) {
 }
 
 
+function showBookDetails(request, response) {
+  let sql = 'SELECT * FROM books WHERE books.id = $1;';
+
+    client.query(sql, [request.params.book_id]).then( result =>{
+      
+      console.log('HELLOOOO');
+      response.render( './books/show', { book: result.rows[0]} )
+    })
+  }
+   
+
+
+
 //Searching for books by title or author
 function search(req, res){
-  //console.log('this', req,res)
-  // let searchStr = req.body.search;
-  // console.log(`Search String: ${searchStr}`);
-  // let searchType = req.body.type;
-  // console.log(req.body);
-  let searchStr = req.body.search[0]
-  // console.log('this', searchStr)
-  let searchType = req.body.search[1]
-  // console.log('this', searchType)
-
+  let searchStr = req.body.search[0];
+  let searchType = req.body.search[1];
   let booksUrl = 'https://www.googleapis.com/books/v1/volumes?q=';
 
   //Search Type Conditionals
@@ -150,5 +153,5 @@ function errorHandler(err, res){
 }
 
 
-
+app.get('*', (req, res) => res.status(404).render('error'));
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
