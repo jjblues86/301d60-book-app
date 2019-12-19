@@ -39,6 +39,8 @@ app.post('/books/:id', renderBook);
 app.post('/save', saveBook);
 app.post('/searches', search);
 app.put('/update/:id', updateBooks);
+// app.get('/update/:id', editBooks);
+app.delete('/books/:id', deleteBooks);
 app.get('/hello', (request, response) => {
   response.render('index');
 });
@@ -147,6 +149,35 @@ function updateBooks(req,res){
     .catch(err => errorHandler(err, res));
 }
 
+// //Edit books
+// function editBooks(req,res){
+//   let bookShelf = `SELECT DISTINCT bookshelf FROM books`;
+//   let bookShelfData = [];
+//   client.query(bookShelf)
+//     .then(result => {
+//       bookShelfData = [...result.rows];
+//     })
+//     .catch(err => errorHandler(err,res));
+
+//   let SQL = 'SELECT * FROM books WHERE id=$1';
+//   let values = [req.params.books_id];
+
+//   return client.query(SQL, values)
+//     .then(data => {
+//       res.render('pages/books/edit', {details: data.rows[0], shelves: bookShelfData});
+//     })
+//     .catch(err => errorHandler(err, res));
+// }
+
+//Delete Books
+function deleteBooks(req,res){
+  client.query(`DELETE FROM books WHERE id=$1`, [req.params.id])
+    .then(deletedBook => {
+      res.redirect('/');
+    })
+    .catch(err => errorHandler(err, res));
+}
+
 
 
 function Book(book) {
@@ -162,12 +193,12 @@ function Book(book) {
 //   let sql = 'SELECT * FROM books WHERE books.id = $1;';
 
 //     client.query(sql, [request.params.book_id]).then( result =>{
-      
+
 //       console.log('HELLOOOO');
 //       response.render( './books/show', { book: result.rows[0]} )
 //     })
 //   }
-   
+
 
 //Error Handler
 function errorHandler(err, res){
