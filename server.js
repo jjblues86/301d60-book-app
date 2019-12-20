@@ -39,7 +39,6 @@ app.post('/books/:id', renderBook);
 app.post('/save', saveBook);
 app.post('/searches', search);
 app.put('/update/:id', updateBooks);
-// app.get('/update/:id', editBooks);
 app.delete('/books/:id', deleteBooks);
 app.get('/hello', (request, response) => {
   response.render('index');
@@ -61,7 +60,6 @@ function search(req, res){
   return superagent.get(booksUrl)
     .then(result => {
       let books = result.body.items.map(book => new Book(book.volumeInfo))
-      //console.log('this', books)
       res.render('searches/show', {books})
     });
 }
@@ -70,13 +68,9 @@ function search(req, res){
 //Home Route
 function home(req, res){
   let SQL = 'SELECT * FROM books';
-  // console.log('this', SQL);
 
   return client.query(SQL)
     .then(responseData => {
-      //console.log('this', responseData);
-
-
       res.render('index', {books: responseData.rows})
     })
     .catch(err => {
@@ -104,10 +98,9 @@ function renderBook(req,res){
       return client.query('SELECT DISTINCT bookshelf FROM books')
         .then(bookShelfData => {
           const bookShelf = bookShelfData.rows;
-          console.log(bookShelf);
           return res.render('books/show', {
             book: book,
-            bookShelf: bookShelf,
+            bookshelf: bookShelf,
           });
         })
         .catch(err => errorHandler(err, res))
@@ -120,7 +113,7 @@ function saveBook(req, res){
   let SQL = `INSERT INTO books
   (author, title, isbn, image_url, description, bookshelf)
   VALUES($1,$2,$3,$4,$5,$6)`;
-  let values = (SQL, [req.body.author, req.body.title, req.body.isbn, req.body.image_url, req.body.description, req.body.bookShelf]);
+  let values = (SQL, [req.body.author, req.body.title, req.body.isbn, req.body.image_url, req.body.description, req.body.bookshelf]);
 
   return client.query(SQL, values)
     .then(savedResults => {
@@ -140,7 +133,7 @@ function saveBook(req, res){
 function updateBooks(req,res){
   let SQL = `UPDATE books SET author=$1, title=$2, isbn=$3, image_url=$4, description=$5, bookshelf=$6 WHERE id=$7`;
 
-  let values = [req.body.author, req.body.title, req.body.isbn, req.body.image_url, req.body.description, req.body.bookShelf, req.params.id];
+  let values = [req.body.author, req.body.title, req.body.isbn, req.body.image_url, req.body.description, req.body.bookshelf, req.params.id];
 
   return client.query(SQL, values)
     .then(updatedBook => {
@@ -149,25 +142,6 @@ function updateBooks(req,res){
     .catch(err => errorHandler(err, res));
 }
 
-// //Edit books
-// function editBooks(req,res){
-//   let bookShelf = `SELECT DISTINCT bookshelf FROM books`;
-//   let bookShelfData = [];
-//   client.query(bookShelf)
-//     .then(result => {
-//       bookShelfData = [...result.rows];
-//     })
-//     .catch(err => errorHandler(err,res));
-
-//   let SQL = 'SELECT * FROM books WHERE id=$1';
-//   let values = [req.params.books_id];
-
-//   return client.query(SQL, values)
-//     .then(data => {
-//       res.render('pages/books/edit', {details: data.rows[0], shelves: bookShelfData});
-//     })
-//     .catch(err => errorHandler(err, res));
-// }
 
 //Delete Books
 function deleteBooks(req,res){
@@ -179,7 +153,7 @@ function deleteBooks(req,res){
 }
 
 
-
+//Constructor
 function Book(book) {
   this.title = book.title || 'No title available';
   this.author = book.authors || 'No author available';
@@ -189,22 +163,11 @@ function Book(book) {
 }
 
 
-// function showBookDetails(request, response) {
-//   let sql = 'SELECT * FROM books WHERE books.id = $1;';
-
-//     client.query(sql, [request.params.book_id]).then( result =>{
-
-//       console.log('HELLOOOO');
-//       response.render( './books/show', { book: result.rows[0]} )
-//     })
-//   }
-
-
 //Error Handler
 function errorHandler(err, res){
   if(res) res.status(500).render('pages/error');
 }
 
 
-app.get('*', (req, res) => res.status(404).render('error'));
+// app.get('*', (req, res) => res.status(404).render('error'));
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
