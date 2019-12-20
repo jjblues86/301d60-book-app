@@ -32,7 +32,7 @@ Download this repo to your local machine and run npm install command within your
 
 12:20pm - Created a heroku app and comopleted all required task for this lab
 
-12-19-2019 4:59pm - Application now has a fully-functional express server, with GET and POST routes for the book resource.
+12-19-2019 4:59pm - Application now has a fully-functional express server, with GET,POST,DELETE and PUT routes for the book resource. The app has a corresponding database to enable users to save a book of their choice.
 
 
 <!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an examples:
