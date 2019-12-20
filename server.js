@@ -165,7 +165,7 @@ function Book(book) {
 
 //Error Handler
 function errorHandler(err, res){
-  if(res) res.status(500).render('pages/error');
+  if(res) res.status(500).render('error');
 }
 
 
